@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Cabeçalho com ícone de voltar e título -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!-- Botão de voltar -->
+        <ImageButton
+            android:id="@+id/btnBackHeader"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Botão de Voltar"
+            android:src="@drawable/ic_arrow_back" />
+
+        <!-- Título centralizado -->
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="My Allergies"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Preview da câmera -->
+<androidx.camera.view.PreviewView
+    android:id="@+id/previewView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black" />
+
+    <!-- Botão de flash sobreposto -->
+    <ImageButton
+        android:id="@+id/btnFlash"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Botão de Flash"
+        android:src="@drawable/ic_flash_off" />
+
+    <!-- Botão de escanear no centro da tela -->
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Escanear" />
+
+    <!-- Barra inferior -->
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#CC000000"
+        android:orientation="vertical"
+        android:padding="16dp"> <!-- Fundo semitransparente -->
+
+        <!-- TextView para exibir o resultado do escaneamento -->
+        <TextView
+            android:id="@+id/tvScanResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Resultado do escaneamento"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <!-- TextView para exibir as alergias encontradas -->
+        <TextView
+            android:id="@+id/tvAllergiesScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Nenhum produto escaneado ainda."
+            android:textColor="@android:color/holo_green_dark"
+            android:textSize="16sp"
+            android:visibility="visible" />
+        <!-- Botões na barra inferior -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAddIngredients"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Adicionar Ingredientes" />
+
+            <Button
+                android:id="@+id/btnScanNewProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="Escanear Novo Produto"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Voltar" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

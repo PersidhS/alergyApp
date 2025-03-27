@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Desenho do ícone de flash desligado -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,2v11h3v9l7,-12h-4l4,-8h-10z" />
+    <path
+        android:fillColor="#FF0000"
+        android:pathData="M2,2l20,20"
+        android:strokeWidth="2"
+        android:strokeColor="#FF0000" />
+</vector>

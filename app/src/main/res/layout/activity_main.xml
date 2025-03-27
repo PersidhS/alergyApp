@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <!-- Conteúdo principal da tela -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Nome do usuário -->
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Nome: "
+            android:textSize="18sp" />
+
+        <!-- Alergias do usuário -->
+        <TextView
+            android:id="@+id/tvAllergies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Alergias: "
+            android:textSize="18sp" />
+
+        <!-- Botão para ir para a tela de escaneamento -->
+        <Button
+            android:id="@+id/btnScan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ir para Escaneamento" />
+
+        <!-- Botão para editar alergias -->
+        <Button
+            android:id="@+id/btnEditAllergies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Editar Alergias" />
+
+
+    </LinearLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>
