@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -5,39 +6,30 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-<ImageView
-    android:id="@+id/ivUserPhoto"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:layout_gravity="center"
-    android:src="@drawable/ic_user_photo"
-    android:contentDescription="Foto do usuário"
-    android:background="@drawable/circle_background"
-    android:scaleType="centerCrop"
-    android:layout_marginBottom="16dp" />
+    <!-- UserPhotoView Component -->
+    <com.example.myallergies.components.UserPhotoView
+        android:id="@+id/userPhotoView"
+        android:layout_width="3dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_horizontal" />
 
-    <!-- Botão para alterar a foto -->
-    <Button
-        android:id="@+id/btnChangePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alterar Foto"
-        android:layout_gravity="center"
-        android:layout_marginBottom="16dp" />
-
-    <!-- Campo para editar o nome -->
+    <!-- Other UI elements -->
     <EditText
         android:id="@+id/etUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Digite seu nome"
-        android:inputType="textPersonName"
-        android:layout_marginBottom="16dp" />
+        android:hint="Enter your name" />
 
-    <!-- Botão para salvar as alterações -->
+    <Button
+        android:id="@+id/btnChangePhoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Change Photo" />
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salvar" />
+        android:text="Save" />
+
 </LinearLayout>

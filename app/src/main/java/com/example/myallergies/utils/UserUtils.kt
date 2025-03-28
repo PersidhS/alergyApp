@@ -44,12 +44,23 @@ object UserUtils {
         }
     }
 
-    fun registerPhotoChangeListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+    fun registerPhotoChangeListener(
+        context: Context,
+        listener: SharedPreferences.OnSharedPreferenceChangeListener
+    ) {
         val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }
 
-    fun unregisterPhotoChangeListener(context: Context, listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+    fun getUserPhotoPath(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("userPhotoPath", null)
+    }
+
+    fun unregisterPhotoChangeListener(
+        context: Context,
+        listener: SharedPreferences.OnSharedPreferenceChangeListener
+    ) {
         val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
     }
