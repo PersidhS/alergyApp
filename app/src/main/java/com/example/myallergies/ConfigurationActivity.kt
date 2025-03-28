@@ -29,7 +29,7 @@ class ConfigurationActivity : AppCompatActivity() {
         etUserName = findViewById(R.id.etUserName)
         btnChangePhoto = findViewById(R.id.btnChangePhoto)
         btnSave = findViewById(R.id.btnSave)
-        btnVoltar = findViewById(R.id.btnBackToHome)
+        btnVoltar = findViewById(R.id.btnBackHeader)
 
         // Load saved name and photo using UserUtils
         val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)

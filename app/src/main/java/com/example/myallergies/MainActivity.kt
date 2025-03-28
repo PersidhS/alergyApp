@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         loadUserPhotos()
 
         // Configurar dados do perfil
-        cachedUserName = "Per"
+        cachedUserName = ""
         tvName.text = "Nome: $cachedUserName"
 
         // Carregar alergias salvas

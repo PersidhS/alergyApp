@@ -1,6 +1,7 @@
 package com.example.myallergies
 
 import AllergiesAdapter
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -22,7 +23,7 @@ class EditAllergiesActivity : AppCompatActivity() {
         val btnAddAllergy = findViewById<Button>(R.id.btnAddAllergy)
         val btnSave = findViewById<Button>(R.id.btnSave)
         val rvAllergies = findViewById<RecyclerView>(R.id.rvAllergies)
-        val btnVoltar = findViewById<ImageButton>(R.id.btnBackToHome)
+        val btnVoltar = findViewById<ImageButton>(R.id.btnBackHeader)
 
         // Configurar RecyclerView
         allergiesAdapter = AllergiesAdapter(allergiesList) { position ->
@@ -38,26 +39,7 @@ class EditAllergiesActivity : AppCompatActivity() {
 
         // Adicionar alergia à lista
         btnAddAllergy.setOnClickListener {
-            val etAllergy: EditText = findViewById(R.id.etAllergy)
-            val allergyInput = etAllergy.text.toString().trim()
-            if (allergyInput.isNotEmpty()) {
-                // Dividir a string por vírgulas e adicionar os itens à lista
-                val newAllergies = allergyInput.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-                val lowercaseAllergiesList = allergiesList.map { it.lowercase() } // Lista em lowercase para comparação
-
-                newAllergies.forEach { allergy ->
-                    if (!lowercaseAllergiesList.contains(allergy.lowercase())) {
-                        allergiesList.add(allergy) // Adicionar apenas se não existir (case insensitive)
-                    } else {
-                        Toast.makeText(this, "Alergia '$allergy' já está na lista.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                allergiesAdapter.notifyDataSetChanged() // Atualizar o RecyclerView
-                etAllergy.text.clear()
-            } else {
-                Toast.makeText(this, "Por favor, insira uma ou mais alergias separadas por vírgula.", Toast.LENGTH_SHORT).show()
-            }
+            showAddAllergyDialog()
         }
 
         // Salvar alergias
@@ -67,10 +49,47 @@ class EditAllergiesActivity : AppCompatActivity() {
             loadAndUpdateAllergies() // Recarregar a lista após salvar
         }
 
-        btnVoltar.setOnClickListener{
+        btnVoltar.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun showAddAllergyDialog() {
+        // Criar um AlertDialog para adicionar alergia
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Adicionar Alergia")
+
+        // Adicionar um campo de entrada de texto no modal
+        val input = EditText(this)
+        input.hint = "Digite o nome da alergia"
+        builder.setView(input)
+
+        // Configurar os botões do modal
+        builder.setPositiveButton("Adicionar") { _, _ ->
+            val allergyInput = input.text.toString().trim()
+            if (allergyInput.isNotEmpty()) {
+                if (!allergiesList.map { it.lowercase() }.contains(allergyInput.lowercase())) {
+                    allergiesList.add(allergyInput) // Adicionar alergia à lista
+                    allergiesAdapter.notifyDataSetChanged() // Atualizar o RecyclerView
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Alergia '$allergyInput' já está na lista.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                Toast.makeText(this, "Por favor, insira uma alergia válida.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+        builder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss() // Fechar o modal
+        }
+
+        // Mostrar o modal
+        builder.create().show()
     }
 
     private fun saveAllergies(allergies: List<String>) {

@@ -1,15 +1,25 @@
 package com.example.myallergies
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.*
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ExperimentalGetImage
+import androidx.camera.core.ImageAnalysis
+import androidx.camera.core.ImageProxy
+import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -35,6 +45,7 @@ class ScanActivity : AppCompatActivity() {
         val btnAddIngredients: Button = findViewById(R.id.btnAddIngredients)
         val btnScan: Button = findViewById(R.id.btnScan)
         val btnNewScan: Button = findViewById(R.id.btnScanNewProduct)
+        val btnVoltar = findViewById<ImageButton>(R.id.btnBackHeader)
 
         // Obter a lista de alergias passada pela MainActivity
         val allergies = intent.getStringArrayListExtra("allergies") ?: arrayListOf()
@@ -77,7 +88,12 @@ class ScanActivity : AppCompatActivity() {
                 val previewView: PreviewView = findViewById(R.id.previewView)
                 previewView.surfaceProvider.to(null) // Remove o SurfaceProvider para limpar o preview
                 previewView.post {
-                    previewView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.black)) // Define fundo preto
+                    previewView.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this,
+                            android.R.color.black
+                        )
+                    ) // Define fundo preto
                 }
             }, ContextCompat.getMainExecutor(this))
 
@@ -109,6 +125,11 @@ class ScanActivity : AppCompatActivity() {
                 )
             }
         }
+
+        btnVoltar.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun updateTextViewWithProducts(tv: TextView, products: List<String>) {
@@ -135,7 +156,8 @@ class ScanActivity : AppCompatActivity() {
         btnSubmitIngredients.setOnClickListener {
             val ingredientsText = etIngredients.text.toString()
             if (ingredientsText.isNotEmpty()) {
-                val matchedAllergies = allergies.filter { ingredientsText.contains(it, ignoreCase = true) }
+                val matchedAllergies =
+                    allergies.filter { ingredientsText.contains(it, ignoreCase = true) }
                 if (matchedAllergies.isNotEmpty()) {
                     matchedAllergies.forEach { allergy ->
                         if (!scannedAllergyProducts.contains(allergy)) {
@@ -144,7 +166,8 @@ class ScanActivity : AppCompatActivity() {
                     }
                     updateTextViewWithProducts(tvPopupResult, scannedAllergyProducts)
                 } else {
-                    tvPopupResult.text = "Este produto não contém nenhum item da sua lista de alergias."
+                    tvPopupResult.text =
+                        "Este produto não contém nenhum item da sua lista de alergias."
                     tvPopupResult.setTextColor(
                         ContextCompat.getColor(
                             this,
@@ -215,7 +238,8 @@ class ScanActivity : AppCompatActivity() {
             recognizer.process(image)
                 .addOnSuccessListener { visionText ->
                     val scanResult = visionText.text
-                    val matchedAllergies = allergies.filter { scanResult.contains(it, ignoreCase = true) }
+                    val matchedAllergies =
+                        allergies.filter { scanResult.contains(it, ignoreCase = true) }
                     if (matchedAllergies.isNotEmpty()) {
                         matchedAllergies.forEach { allergy ->
                             if (!scannedAllergyProducts.contains(allergy)) {
