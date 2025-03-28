@@ -8,6 +8,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -34,6 +35,7 @@
 
         <activity android:name=".ScanActivity" />
         <activity android:name=".EditAllergiesActivity" />
+        <activity android:name=".ConfigurationActivity" />
 
     </application>
 

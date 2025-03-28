@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.core.view.GravityCompat
+import com.example.myallergies.utils.UserUtils // Importando o UserUtils
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         val tvAllergies: TextView = findViewById(R.id.tvAllergies)
         val btnScan: Button = findViewById(R.id.btnScan)
         val btnEditAllergies: Button = findViewById(R.id.btnEditAllergies)
+        val btnSettings: Button = findViewById(R.id.btnSettings)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val ivProfileCircle: ImageView = findViewById(R.id.ivProfileCircle)
 
@@ -47,6 +49,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Navegar para a página de configurações
+        btnSettings.setOnClickListener {
+            val intent = Intent(this, ConfigurationActivity::class.java)
+            startActivity(intent)
+        }
+
         // Abrir o menu lateral ao clicar no círculo
         ivProfileCircle.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
@@ -61,7 +69,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Atualizar a lista de alergias quando a atividade for retomada
+
+        // Atualizar o nome do usuário
+        val tvName: TextView = findViewById(R.id.tvName)
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val savedName = sharedPreferences.getString("userName", "Per")
+        tvName.text = "Nome: $savedName"
+
+        // Atualizar a foto do usuário usando UserUtils
+        val ivProfileCircle: ImageView = findViewById(R.id.ivProfileCircle)
+        UserUtils.loadUserPhoto(ivProfileCircle, this)
+
+        // Atualizar a lista de alergias
         val tvAllergies: TextView = findViewById(R.id.tvAllergies)
         val allergies = loadAllergies()
         tvAllergies.text = if (allergies.isNotEmpty()) {
