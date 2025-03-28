@@ -40,10 +40,10 @@ class UserPhotoView @JvmOverloads constructor(
             if (file.exists()) {
                 ivUserPhoto.setImageURI(Uri.fromFile(file))
             } else {
-                ivUserPhoto.setImageResource(R.drawable.ic_user_photo) // Placeholder padrão
+                setPlaceholder(R.drawable.ic_user_photo) // Placeholder padrão
             }
         } else {
-            ivUserPhoto.setImageResource(R.drawable.ic_user_photo) // Placeholder padrão
+            setPlaceholder(R.drawable.ic_user_photo) // Placeholder padrão
         }
     }
 
@@ -54,5 +54,10 @@ class UserPhotoView @JvmOverloads constructor(
         } else {
             Toast.makeText(context, "Erro ao salvar a foto.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    // Adicionar o método setPlaceholder
+    private fun setPlaceholder(resourceId: Int) {
+        ivUserPhoto.setImageResource(resourceId)
     }
 }

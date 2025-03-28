@@ -3,12 +3,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.example.myallergies.components.UserPhotoView
         android:id="@+id/ivUserPhoto"
-        android:layout_width="172dp"
-        android:layout_height="177dp"
-        android:background="@drawable/circle_background"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_user_photo" />
-
+        android:src="@drawable/ic_user_photo"
+        android:background="@drawable/circle_background" />
 </merge>

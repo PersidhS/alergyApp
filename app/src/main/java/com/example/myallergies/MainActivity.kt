@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.core.view.GravityCompat
+import com.example.myallergies.components.UserPhotoView
 import com.example.myallergies.utils.UserUtils // Importando o UserUtils
 
 class MainActivity : AppCompatActivity() {
@@ -58,6 +59,12 @@ class MainActivity : AppCompatActivity() {
         // Abrir o menu lateral ao clicar no círculo
         ivProfileCircle.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        // Carregar a foto do usuário no modal ao abrir o menu lateral
+        ivProfileCircle.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+            UserUtils.loadUserPhoto(ivProfileCircle, this) // Atualiza a foto no modal
         }
     }
 
