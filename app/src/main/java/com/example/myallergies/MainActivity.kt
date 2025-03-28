@@ -1,6 +1,7 @@
 package com.example.myallergies
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -92,7 +93,8 @@ class MainActivity : AppCompatActivity() {
     private fun loadUserPhotos() {
         // Obter o caminho/URL da foto atual do usuário
         val currentPhotoPath =
-            UserUtils.getUserPhotoPath(this) // Método fictício para obter o caminho/URL da foto
+            UserUtils.getUserPhotoPath(this)
+        val photoUri = if (!currentPhotoPath.isNullOrEmpty()) Uri.parse(currentPhotoPath) else null
 
         // Verificar se a foto foi alterada
         if (currentPhotoPath != lastProfilePhotoPath) {

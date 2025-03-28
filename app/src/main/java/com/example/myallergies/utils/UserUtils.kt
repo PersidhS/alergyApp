@@ -50,34 +50,51 @@ object UserUtils {
      * @param imageView ImageView onde a foto será exibida.
      * @param context Contexto da aplicação.
      */
+//    fun loadUserPhoto(imageView: ImageView, context: Context) {
+//        val sharedPreferences = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
+//        val savedPhotoPath = sharedPreferences.getString(PHOTO_PATH_KEY, null)
+//
+//        if (!savedPhotoPath.isNullOrEmpty()) {
+//            val file = File(savedPhotoPath)
+//            if (file.exists()) {
+//                imageView.setImageURI(Uri.fromFile(file))
+//            } else {
+//                handleInvalidPhoto(context, imageView)
+//            }
+//        } else {
+//            handleInvalidPhoto(context, imageView)
+//        }
+//    }
+
+
     fun loadUserPhoto(imageView: ImageView, context: Context) {
+        // Recuperar o caminho da foto salva no SharedPreferences
         val sharedPreferences = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
         val savedPhotoPath = sharedPreferences.getString(PHOTO_PATH_KEY, null)
 
         if (!savedPhotoPath.isNullOrEmpty()) {
-            val file = File(savedPhotoPath)
-            if (file.exists()) {
-                imageView.setImageURI(Uri.fromFile(file))
+            val photoFile = File(savedPhotoPath)
+
+            if (photoFile.exists()) {
+                // Usar Glide para carregar a imagem do arquivo
+                val options = RequestOptions()
+                    .circleCrop() // Garante que a imagem seja cortada em um círculo
+                    .placeholder(R.drawable.ic_user_photo) // Imagem padrão
+                    .error(R.drawable.ic_user_photo) // Imagem de erro
+
+                Glide.with(context)
+                    .load(photoFile) // Carregar o arquivo diretamente
+                    .apply(options)
+                    .into(imageView)
             } else {
-                handleInvalidPhoto(context, imageView)
+                // Caso o arquivo não exista, exibir a imagem padrão
+                imageView.setImageResource(R.drawable.ic_user_photo)
             }
         } else {
-            handleInvalidPhoto(context, imageView)
+            // Caso o caminho não esteja salvo, exibir a imagem padrão
+            imageView.setImageResource(R.drawable.ic_user_photo)
         }
     }
-
-
-//fun loadUserPhoto(imageView: ImageView, context: Context, photoUri: Uri?) {
-//    val options = RequestOptions()
-//        .circleCrop() // Garante que a imagem seja cortada em um círculo
-//        .placeholder(R.drawable.ic_user_photo) // Imagem padrão
-//        .error(R.drawable.ic_user_photo) // Imagem de erro
-//
-//    Glide.with(context)
-//        .load(photoUri) // URI da foto do usuário
-//        .apply(options)
-//        .into(imageView)
-//}
 
     /**
      * Método para lidar com fotos inválidas ou ausentes.

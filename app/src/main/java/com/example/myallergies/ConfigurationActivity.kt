@@ -35,6 +35,10 @@ class ConfigurationActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val savedName = sharedPreferences.getString("userName", "")
         etUserName.setText(savedName)
+
+        val savedPhotoPath = sharedPreferences.getString("photoPath", null)
+        val photoUri = if (!savedPhotoPath.isNullOrEmpty()) Uri.parse(savedPhotoPath) else null
+
         UserUtils.loadUserPhoto(userPhotoView, this)
 
         // Set up event to change photo
