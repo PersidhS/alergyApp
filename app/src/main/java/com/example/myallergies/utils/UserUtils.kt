@@ -45,36 +45,22 @@ object UserUtils {
         }
     }
 
-    /**
-     * Carrega a foto do usuário no ImageView fornecido.
-     * @param imageView ImageView onde a foto será exibida.
-     * @param context Contexto da aplicação.
-     */
-//    fun loadUserPhoto(imageView: ImageView, context: Context) {
-//        val sharedPreferences = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
-//        val savedPhotoPath = sharedPreferences.getString(PHOTO_PATH_KEY, null)
-//
-//        if (!savedPhotoPath.isNullOrEmpty()) {
-//            val file = File(savedPhotoPath)
-//            if (file.exists()) {
-//                imageView.setImageURI(Uri.fromFile(file))
-//            } else {
-//                handleInvalidPhoto(context, imageView)
-//            }
-//        } else {
-//            handleInvalidPhoto(context, imageView)
-//        }
-//    }
-
-
     fun loadUserPhoto(imageView: ImageView, context: Context) {
         val sharedPreferences = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
         val savedPhotoPath = sharedPreferences.getString(PHOTO_PATH_KEY, null)
 
+        val options = RequestOptions()
+            .circleCrop() // Garante que a imagem seja cortada em um círculo
+            .placeholder(R.drawable.ic_user_photo) // Imagem padrão
+            .error(R.drawable.ic_user_photo) // Imagem de erro
+
         if (!savedPhotoPath.isNullOrEmpty()) {
             val file = File(savedPhotoPath)
             if (file.exists()) {
-                imageView.setImageURI(Uri.fromFile(file))
+                Glide.with(context)
+                    .load(Uri.fromFile(file)) // Carrega a imagem do arquivo
+                    .apply(options)
+                    .into(imageView)
             } else {
                 handleInvalidPhoto(context, imageView)
             }
