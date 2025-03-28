@@ -3,8 +3,11 @@ package com.example.myallergies
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.core.view.GravityCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         val tvAllergies: TextView = findViewById(R.id.tvAllergies)
         val btnScan: Button = findViewById(R.id.btnScan)
         val btnEditAllergies: Button = findViewById(R.id.btnEditAllergies)
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val ivProfileCircle: ImageView = findViewById(R.id.ivProfileCircle)
 
         // Configurar dados do perfil
         val name = "Per"
@@ -40,6 +45,11 @@ class MainActivity : AppCompatActivity() {
         btnEditAllergies.setOnClickListener {
             val intent = Intent(this, EditAllergiesActivity::class.java)
             startActivity(intent)
+        }
+
+        // Abrir o menu lateral ao clicar no círculo
+        ivProfileCircle.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
         }
     }
 
