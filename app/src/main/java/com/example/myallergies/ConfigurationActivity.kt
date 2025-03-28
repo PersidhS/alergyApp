@@ -23,7 +23,7 @@ class ConfigurationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.configuration_main)
+        setContentView(R.layout.activity_configuration)
 
         userPhotoView = findViewById(R.id.userPhotoView)
         etUserName = findViewById(R.id.etUserName)
