@@ -70,12 +70,10 @@ class ConfigurationActivity : AppCompatActivity() {
             }
         }
 
-//        btnVoltar.setOnClickListener {
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-//            startActivity(intent)
-//            finish()
-//        }
+        btnVoltar.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

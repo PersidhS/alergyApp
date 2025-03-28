@@ -1,10 +1,11 @@
 package com.example.myallergies
 
 import AllergiesAdapter
-import android.os.Build.*
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ class EditAllergiesActivity : AppCompatActivity() {
         val btnAddAllergy = findViewById<Button>(R.id.btnAddAllergy)
         val btnSave = findViewById<Button>(R.id.btnSave)
         val rvAllergies = findViewById<RecyclerView>(R.id.rvAllergies)
+        val btnVoltar = findViewById<ImageButton>(R.id.btnBackToHome)
 
         // Configurar RecyclerView
         allergiesAdapter = AllergiesAdapter(allergiesList) { position ->
@@ -63,6 +65,11 @@ class EditAllergiesActivity : AppCompatActivity() {
             saveAllergies(allergiesList)
             Toast.makeText(this, "Alergias salvas com sucesso!", Toast.LENGTH_SHORT).show()
             loadAndUpdateAllergies() // Recarregar a lista após salvar
+        }
+
+        btnVoltar.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

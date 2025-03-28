@@ -6,6 +6,8 @@ import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.myallergies.R
 import java.io.File
 import java.io.FileOutputStream
@@ -63,6 +65,19 @@ object UserUtils {
             handleInvalidPhoto(context, imageView)
         }
     }
+
+
+//fun loadUserPhoto(imageView: ImageView, context: Context, photoUri: Uri?) {
+//    val options = RequestOptions()
+//        .circleCrop() // Garante que a imagem seja cortada em um círculo
+//        .placeholder(R.drawable.ic_user_photo) // Imagem padrão
+//        .error(R.drawable.ic_user_photo) // Imagem de erro
+//
+//    Glide.with(context)
+//        .load(photoUri) // URI da foto do usuário
+//        .apply(options)
+//        .into(imageView)
+//}
 
     /**
      * Método para lidar com fotos inválidas ou ausentes.
