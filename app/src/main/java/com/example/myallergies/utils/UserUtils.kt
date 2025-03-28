@@ -68,31 +68,18 @@ object UserUtils {
 
 
     fun loadUserPhoto(imageView: ImageView, context: Context) {
-        // Recuperar o caminho da foto salva no SharedPreferences
         val sharedPreferences = context.getSharedPreferences(USER_PREFS, Context.MODE_PRIVATE)
         val savedPhotoPath = sharedPreferences.getString(PHOTO_PATH_KEY, null)
 
         if (!savedPhotoPath.isNullOrEmpty()) {
-            val photoFile = File(savedPhotoPath)
-
-            if (photoFile.exists()) {
-                // Usar Glide para carregar a imagem do arquivo
-                val options = RequestOptions()
-                    .circleCrop() // Garante que a imagem seja cortada em um círculo
-                    .placeholder(R.drawable.ic_user_photo) // Imagem padrão
-                    .error(R.drawable.ic_user_photo) // Imagem de erro
-
-                Glide.with(context)
-                    .load(photoFile) // Carregar o arquivo diretamente
-                    .apply(options)
-                    .into(imageView)
+            val file = File(savedPhotoPath)
+            if (file.exists()) {
+                imageView.setImageURI(Uri.fromFile(file))
             } else {
-                // Caso o arquivo não exista, exibir a imagem padrão
-                imageView.setImageResource(R.drawable.ic_user_photo)
+                handleInvalidPhoto(context, imageView)
             }
         } else {
-            // Caso o caminho não esteja salvo, exibir a imagem padrão
-            imageView.setImageResource(R.drawable.ic_user_photo)
+            handleInvalidPhoto(context, imageView)
         }
     }
 
