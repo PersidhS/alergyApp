@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ class ConfigurationActivity : AppCompatActivity() {
     private lateinit var btnChangePhoto: Button
     private lateinit var btnSave: Button
     private var tempPhotoUri: Uri? = null // Temporarily store the selected photo URI
+    private lateinit var btnVoltar: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +29,7 @@ class ConfigurationActivity : AppCompatActivity() {
         etUserName = findViewById(R.id.etUserName)
         btnChangePhoto = findViewById(R.id.btnChangePhoto)
         btnSave = findViewById(R.id.btnSave)
+        btnVoltar = findViewById(R.id.btnBackToHome)
 
         // Load saved name and photo using UserUtils
         val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
@@ -66,6 +69,13 @@ class ConfigurationActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, insira um nome.", Toast.LENGTH_SHORT).show()
             }
         }
+
+//        btnVoltar.setOnClickListener {
+//            val intent = Intent(this, MainActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//            startActivity(intent)
+//            finish()
+//        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

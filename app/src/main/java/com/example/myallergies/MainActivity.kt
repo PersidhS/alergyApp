@@ -8,39 +8,49 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.core.view.GravityCompat
-import com.example.myallergies.components.UserPhotoView
-import com.example.myallergies.utils.UserUtils // Importando o UserUtils
+import com.example.myallergies.utils.UserUtils
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var ivProfileCircle: ImageView
+    private lateinit var ivUserPhoto: ImageView
+    private lateinit var tvName: TextView
+    private lateinit var tvAllergies: TextView
+    private var cachedAllergies: List<String>? = null
+    private var cachedUserName: String? = null
+    private var lastProfilePhotoPath: String? =
+        null // Armazena o caminho/URL da última foto carregada
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tvName: TextView = findViewById(R.id.tvName)
-        val tvAllergies: TextView = findViewById(R.id.tvAllergies)
+        // Inicializar views
+        tvName = findViewById(R.id.tvName)
+        tvAllergies = findViewById(R.id.tvAllergies)
         val btnScan: Button = findViewById(R.id.btnScan)
         val btnEditAllergies: Button = findViewById(R.id.btnEditAllergies)
         val btnSettings: Button = findViewById(R.id.btnSettings)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val ivProfileCircle: ImageView = findViewById(R.id.ivProfileCircle)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        ivProfileCircle = findViewById(R.id.ivProfileCircle)
+        ivUserPhoto = findViewById(R.id.ivUserPhoto)
+
+        // Carregar foto do usuário
+        loadUserPhotos()
 
         // Configurar dados do perfil
-        val name = "Per"
-        tvName.text = "Nome: $name"
+        cachedUserName = "Per"
+        tvName.text = "Nome: $cachedUserName"
 
         // Carregar alergias salvas
-        val allergies = loadAllergies()
-        tvAllergies.text = if (allergies.isNotEmpty()) {
-            "Alergias: ${allergies.joinToString(", ")}"
-        } else {
-            "Alergias: Nenhuma"
-        }
+        cachedAllergies = loadAllergies()
+        updateAllergiesText()
 
         // Navegar para a página de escaneamento
         btnScan.setOnClickListener {
             val intent = Intent(this, ScanActivity::class.java)
-            intent.putStringArrayListExtra("allergies", ArrayList(allergies))
+            intent.putStringArrayListExtra("allergies", ArrayList(cachedAllergies))
             startActivity(intent)
         }
 
@@ -60,40 +70,53 @@ class MainActivity : AppCompatActivity() {
         ivProfileCircle.setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
-
-        // Carregar a foto do usuário no modal ao abrir o menu lateral
-        ivProfileCircle.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-            UserUtils.loadUserPhoto(ivProfileCircle, this) // Atualiza a foto no modal
-        }
     }
 
     private fun loadAllergies(): List<String> {
-        // Carregar alergias salvas usando SharedPreferences
-        val sharedPreferences = getSharedPreferences("AllergiesPrefs", MODE_PRIVATE)
-        return sharedPreferences.getStringSet("allergies", emptySet())?.toList() ?: emptyList()
+        if (cachedAllergies == null) {
+            val sharedPreferences = getSharedPreferences("AllergiesPrefs", MODE_PRIVATE)
+            cachedAllergies =
+                sharedPreferences.getStringSet("allergies", emptySet())?.toList() ?: emptyList()
+        }
+        return cachedAllergies!!
+    }
+
+    private fun updateAllergiesText() {
+        tvAllergies.text = if (cachedAllergies?.isNotEmpty() == true) {
+            "Alergias: ${cachedAllergies!!.joinToString(", ")}"
+        } else {
+            "Alergias: Nenhuma"
+        }
+    }
+
+    private fun loadUserPhotos() {
+        // Obter o caminho/URL da foto atual do usuário
+        val currentPhotoPath =
+            UserUtils.getUserPhotoPath(this) // Método fictício para obter o caminho/URL da foto
+
+        // Verificar se a foto foi alterada
+        if (currentPhotoPath != lastProfilePhotoPath) {
+            UserUtils.loadUserPhoto(ivProfileCircle, this)
+            UserUtils.loadUserPhoto(ivUserPhoto, this)
+            lastProfilePhotoPath = currentPhotoPath // Atualizar o caminho/URL armazenado
+        }
     }
 
     override fun onResume() {
         super.onResume()
 
         // Atualizar o nome do usuário
-        val tvName: TextView = findViewById(R.id.tvName)
-        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
-        val savedName = sharedPreferences.getString("userName", "Per")
-        tvName.text = "Nome: $savedName"
+        if (cachedUserName == null) {
+            val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+            cachedUserName = sharedPreferences.getString("userName", "Per")
+        }
+        tvName.text = "Nome: $cachedUserName"
 
-        // Atualizar a foto do usuário usando UserUtils
-        val ivProfileCircle: ImageView = findViewById(R.id.ivProfileCircle)
-        UserUtils.loadUserPhoto(ivProfileCircle, this)
+        // Verificar e recarregar a foto do usuário, se necessário
+        loadUserPhotos()
 
         // Atualizar a lista de alergias
-        val tvAllergies: TextView = findViewById(R.id.tvAllergies)
-        val allergies = loadAllergies()
-        tvAllergies.text = if (allergies.isNotEmpty()) {
-            "Alergias: ${allergies.joinToString(", ")}"
-        } else {
-            "Alergias: Nenhuma"
-        }
+        cachedAllergies = loadAllergies()
+        updateAllergiesText()
     }
 }
