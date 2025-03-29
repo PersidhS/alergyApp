@@ -31,17 +31,16 @@
                 android:text="Meu App"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
+
             <!-- Círculo clicável -->
-            <ImageView
-                android:id="@+id/ivProfileCircle"
+            <com.example.myallergies.components.UserPhotoView
+                android:id="@+id/userPhotoView"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="end"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/circle_background"
-                android:contentDescription="Profile"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_user_photo" />
+                android:contentDescription="@string/user_photo"
+                android:scaleType="centerCrop" />
         </androidx.appcompat.widget.Toolbar>
 
         <!-- Conteúdo principal -->
@@ -50,7 +49,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
-
 
             <!-- Alergias do usuário -->
             <TextView
@@ -78,43 +76,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Menu lateral (Drawer) -->
-    <LinearLayout
-        android:id="@+id/nav_view"
-        android:layout_width="280dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <!-- Inclui o menu lateral -->
+    <include layout="@layout/nav_drawer" />
 
-        <!-- Foto do usuário -->
-        <ImageView
-            android:id="@+id/ivUserPhoto"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:background="@drawable/circle_background"
-            android:contentDescription="User Photo"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_user_photo" />
-        <!-- Nome do usuário -->
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Nome do Usuário"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <!-- Botão para configurações -->
-        <Button
-            android:id="@+id/btnSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Configurações" />
-    </LinearLayout>
 </androidx.drawerlayout.widget.DrawerLayout>

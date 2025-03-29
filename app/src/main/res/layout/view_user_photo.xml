@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.example.myallergies.components.UserPhotoView
+    <ImageView
         android:id="@+id/ivUserPhoto"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_user_photo"
-        android:background="@drawable/circle_background" />
-</merge>
+        android:contentDescription="@string/user_photo"
+        android:background="@drawable/circle_background"
+        android:src="@drawable/ic_user_photo" />
+
+</FrameLayout>

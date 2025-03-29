@@ -4,24 +4,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.myallergies.components.UserPhotoView
 import com.example.myallergies.utils.UserUtils
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var ivProfileCircle: ImageView
-    private lateinit var ivUserPhoto: ImageView
+    private lateinit var ivProfileCircle: UserPhotoView
+    private lateinit var ivUserPhoto: UserPhotoView
     private lateinit var tvName: TextView
     private lateinit var tvAllergies: TextView
     private var cachedAllergies: List<String>? = null
     private var cachedUserName: String? = null
-    private var lastProfilePhotoPath: String? =
-        null // Armazena o caminho/URL da última foto carregada
+    private var lastProfilePhotoPath: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         val btnEditAllergies: Button = findViewById(R.id.btnEditAllergies)
         val btnSettings: Button = findViewById(R.id.btnSettings)
         drawerLayout = findViewById(R.id.drawer_layout)
-        ivProfileCircle = findViewById(R.id.ivProfileCircle)
-        ivUserPhoto = findViewById(R.id.ivUserPhoto)
+        ivProfileCircle = findViewById(R.id.userPhotoView)
+        ivUserPhoto = findViewById(R.id.userPhotoView)
 
         // Carregar foto do usuário
         loadUserPhotos()
@@ -92,21 +92,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadUserPhotos() {
         // Obter o caminho/URL da foto atual do usuário
-        val currentPhotoPath =
-            UserUtils.getUserPhotoPath(this)
+        val currentPhotoPath = UserUtils.getUserPhotoPath(this)
         val photoUri = if (!currentPhotoPath.isNullOrEmpty()) Uri.parse(currentPhotoPath) else null
 
         // Verificar se a foto foi alterada
-        if (currentPhotoPath != lastProfilePhotoPath) {
-            UserUtils.loadUserPhoto(ivProfileCircle, this)
-            UserUtils.loadUserPhoto(ivUserPhoto, this)
+        if (photoUri != null && currentPhotoPath != lastProfilePhotoPath) {
+            // Atualizar as imagens nos locais necessários
+            ivProfileCircle.updatePhoto(photoUri) // Método existente no UserPhotoView
+            ivUserPhoto.updatePhoto(photoUri) // Método existente no UserPhotoView
             lastProfilePhotoPath = currentPhotoPath // Atualizar o caminho/URL armazenado
         }
     }
 
     override fun onResume() {
         super.onResume()
-
         // Atualizar o nome do usuário
         if (cachedUserName == null) {
             val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)

@@ -7,18 +7,17 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myallergies.components.UserPhotoView
 import com.example.myallergies.utils.UserUtils
 
 class ConfigurationActivity : AppCompatActivity() {
-
-    private lateinit var userPhotoView: ImageView
+    private lateinit var userPhotoView: UserPhotoView
     private lateinit var etUserName: EditText
     private lateinit var btnChangePhoto: Button
     private lateinit var btnSave: Button
-    private var tempPhotoUri: Uri? = null // Temporarily store the selected photo URI
+    private var tempPhotoUri: Uri? = null
     private lateinit var btnVoltar: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,11 +35,6 @@ class ConfigurationActivity : AppCompatActivity() {
         val savedName = sharedPreferences.getString("userName", "")
         etUserName.setText(savedName)
 
-        val savedPhotoPath = sharedPreferences.getString("photoPath", null)
-        val photoUri = if (!savedPhotoPath.isNullOrEmpty()) Uri.parse(savedPhotoPath) else null
-
-        UserUtils.loadUserPhoto(userPhotoView, this)
-
         // Set up event to change photo
         btnChangePhoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -53,18 +47,11 @@ class ConfigurationActivity : AppCompatActivity() {
             val userName = etUserName.text.toString()
             if (userName.isNotEmpty()) {
                 val editor = sharedPreferences.edit()
-
-                // Save user name
                 editor.putString("userName", userName)
 
-                // Save photo using UserUtils
+                // Save photo using UserPhotoView
                 tempPhotoUri?.let { uri ->
-                    val savedPath = UserUtils.saveUserPhoto(this, uri)
-                    if (savedPath != null) {
-                        Toast.makeText(this, "Foto salva com sucesso!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this, "Erro ao salvar a foto.", Toast.LENGTH_SHORT).show()
-                    }
+                    userPhotoView.updatePhoto(uri) // Atualiza a foto diretamente no componente
                 }
 
                 editor.apply()
@@ -74,7 +61,7 @@ class ConfigurationActivity : AppCompatActivity() {
             }
         }
 
-        btnVoltar.setOnClickListener{
+        btnVoltar.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
@@ -83,14 +70,12 @@ class ConfigurationActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
-
             val imageUri = data?.data
             if (imageUri != null) {
                 // Atualiza a tempPhotoUri com a URI da imagem selecionada
                 tempPhotoUri = imageUri
-
-                // Exibe a imagem selecionada no ImageView imediatamente
-                userPhotoView.setImageURI(tempPhotoUri)
+                // Exibe a imagem selecionada no UserPhotoView imediatamente
+                userPhotoView.updatePhoto(tempPhotoUri!!)
             }
         }
     }
